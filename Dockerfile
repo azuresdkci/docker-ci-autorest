@@ -27,11 +27,14 @@ RUN apt-get -qqy install \
     lib32ncurses5 \
     lib32z1 \
     nodejs \
-    npm
+    npm \
+    python-pip \
+    libgmp-dev \
+    python3-pip
 
 # Install RVM
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
-    && curl -sSL https://get.rvm.io | bash -s stable --ruby
+    && curl -sSL https://get.rvm.io | bash -s stable --ruby && echo 'source /etc/profile.d/rvm.sh' >> ~/.bashrc
     
 # Install Mono
 # We can't just use the default mono image because that's based on Debian.
@@ -59,10 +62,6 @@ RUN curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh |
 RUN bash -c "source $DNX_USER_HOME/dnvm/dnvm.sh \
     && dnvm install $DNX_VERSION -r coreclr -alias default \
 	&& dnvm alias default | xargs -i ln -s $DNX_USER_HOME/runtimes/{} $DNX_USER_HOME/runtimes/default"
-    
-# Install Python and Ruby
-RUN apt-get update \
-	&& apt-get install -y python-pip libgmp-dev python3-pip
     
 # Set PATH variable
 ENV PATH $PATH:$DNX_USER_HOME/runtimes/default/bin:/usr/local/rvm/scripts:~/.local/bin
