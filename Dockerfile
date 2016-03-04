@@ -60,12 +60,12 @@ RUN bash -c "source $DNX_USER_HOME/dnvm/dnvm.sh \
     && dnvm install $DNX_VERSION -r coreclr -alias default \
 	&& dnvm alias default | xargs -i ln -s $DNX_USER_HOME/runtimes/{} $DNX_USER_HOME/runtimes/default"
     
-# Install Python
+# Install Python and Ruby
 RUN apt-get update \
-	&& apt-get install -y python-pip
+	&& apt-get install -y python-pip libgmp-dev python3-pip
     
 # Set PATH variable
-ENV PATH $PATH:$DNX_USER_HOME/runtimes/default/bin:/usr/local/rvm/scripts/rvm
+ENV PATH $PATH:$DNX_USER_HOME/runtimes/default/bin:/usr/local/rvm/scripts:~/.local/bin
 
 # Configure GULP
 RUN ln -s /usr/bin/nodejs /usr/bin/node \
